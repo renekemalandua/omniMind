@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: omnimind_db
+    environment:
+      POSTGRES_USER: omnimind
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: omnimind
+    ports:
+      - "5432:5432"
+    volumes:
+      - omnimind_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: omnimind_backend
+    environment:
+      DATABASE_URL: postgres://omnimind:secret@db:5432/omnimind
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+
+volumes:
+  omnimind_data:
