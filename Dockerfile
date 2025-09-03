@@ -1,4 +1,4 @@
-# Node 20 (ou LTS)
+# Node 20 (or LTS)
 FROM node:20
 
 WORKDIR /usr/src/app
