@@ -13,10 +13,10 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle(swaggerTitle)
-    .setDescription('API of Auth OmniMind')
+    .setDescription('OmniMind is a centralized backend service designed to manage multiple projects with a shared authentication system, modular architecture, and scalable infrastructure.')
     .setContact(
       'René Kemalandua',
-      'https://github.com/renekemalandua',
+      'http://afonsokemalandua-portfolio.vercel.app',
       'kemalanduar@gmail.com',
     )
     .addServer('http://localhost:3000', 'Development')
