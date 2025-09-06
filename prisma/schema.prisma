@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid())
-  email          String   @unique
-  phone          String   @unique
+  id             String    @id @default(uuid())
+  email          String    @unique
+  phone          String    @unique
   identityNumber String?   @unique
   password       String
-  isVerified     Boolean  @default(true)
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  isVerified     Boolean   @default(true)
+  isActive       Boolean   @default(true)
+  deletedAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }

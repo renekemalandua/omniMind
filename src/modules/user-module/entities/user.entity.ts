@@ -1,32 +1,24 @@
+import { AggregateRoot, IdValueObject, Optional } from "src/shared";
+
 interface IUserProps {
-  id: string;
   email: string;
   phone: string;
-  identityNumber: string | null;
+  identityNumber?: string;
   password: string;
-  isVerified: boolean;
-  isActive: boolean;
+  isVerified?: boolean;
+  isActive?: boolean;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 }
 
-export class UserEntity {
-  private props: IUserProps;
-
-  constructor(props: IUserProps) {
-    this.props = { ...props };
-  }
-
-  static create(props: IUserProps) {
+export class UserEntity extends AggregateRoot<IUserProps> {
+  static create(props: Optional<IUserProps, 'createdAt'>, id?: IdValueObject) {
     return new UserEntity(
       {
         ...props,
-        id: props.id,
         createdAt: props.createdAt ?? new Date(),
-        updatedAt: props.createdAt ?? new Date(),
-        isActive: props.isActive ?? true,
-        isVerified: props.isVerified ?? false,
-      }
+      },
+      id,
     );
   }
 
@@ -62,14 +54,11 @@ export class UserEntity {
     this.touch();
   }
 
-  private touch(): void {
+  protected touch(): void {
     this.props.updatedAt = new Date();
   }
 
   // ===== Getters =====
-  public get id(): string {
-    return this.props.id;
-  }
 
   public get email(): string {
     return this.props.email;
@@ -79,8 +68,8 @@ export class UserEntity {
     return this.props.phone;
   }
 
-  public get identityNumber(): string | null {
-    return this.props.identityNumber;
+  public get identityNumber(): string {
+    return this.props.identityNumber ?? "";
   }
 
   public get password(): string {
@@ -88,11 +77,11 @@ export class UserEntity {
   }
 
   public get isActive(): boolean {
-    return this.props.isActive;
+    return this.props.isActive ?? false;
   }
 
   public get isVerified(): boolean {
-    return this.props.isVerified;
+    return this.props.isVerified ?? false;
   }
 
   public get createdAt(): Date {
@@ -100,6 +89,6 @@ export class UserEntity {
   }
 
   public get updatedAt(): Date {
-    return this.props.updatedAt;
+    return this.props.updatedAt ?? new Date();
   }
 }
