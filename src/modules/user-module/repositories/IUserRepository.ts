@@ -1,0 +1,23 @@
+import { UserEntity } from '../entities';
+
+export abstract class IUserRepository {
+  abstract create(data: UserEntity): Promise<UserEntity>;
+  abstract list(): Promise<UserEntity[]>;
+  abstract findById(id: string): Promise<UserEntity | null>;
+  abstract findByEmail(email: string): Promise<UserEntity | null>;
+  abstract findByPhone(phone: string): Promise<UserEntity | null>;
+  abstract findByIdentityNumber(identity: string): Promise<UserEntity | null>;
+
+  
+  abstract delete(id: string): Promise<void>;
+  abstract restore(id: string): Promise<UserEntity>;
+
+  abstract verify(id: string): Promise<void>;
+  abstract activate(id: string): Promise<void>;
+  abstract deactivate(id: string): Promise<void>;
+
+  abstract updateEmail(newEmail: string, id: string): Promise<void>;
+  abstract updatePhone(newPhone: string, id: string): Promise<void>;
+  abstract updatePassword(newPassword: string, id: string): Promise<void>;
+  abstract updateIdentityNumber(identity: string, id: string): Promise<void>;
+}
