@@ -5,3 +5,4 @@ export * from './updatePhone.dto';
 export * from './updateEmail.dto';
 export * from './resendEmail.dto';
 export * from './resetPassword.dto';
+export * from './updateIdentityNumber.dto';

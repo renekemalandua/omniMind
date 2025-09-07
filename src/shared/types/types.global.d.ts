@@ -1,12 +1,16 @@
 declare namespace HTTP {
   declare namespace User {
+    
     type UserDetail = {
       id: string;
       email: string;
       phone: string;
       identity: string | null;
       verified: boolean;
+      emailVerified: boolean;
+      identityVerified: boolean;
       active: boolean;
+      deletedAt: Date | null;
       createdAt: Date;
       updatedAt: Date;
     };
@@ -20,17 +24,18 @@ declare namespace HTTP {
     type RegisterResponse = {
       confirmationToken: string;
       message: string;
-      user: API.User.UserProfile;
+      user: UserDetail;
     };
 
     type LoginRequest = {
-      nickname: string;
+      email: string;
       password: string;
+      platform: string;
     };
 
     type LoginResponse = {
       token: string;
-      user: API.User.UserProfile;
+      user: UserDetail;
     };
   }
 }
