@@ -30,7 +30,7 @@ export class AuthLoginUseCase
       throw new BadRequestException('Email or password dont match');
 
     if (!user.isActive)
-      throw new UnauthorizedException('user account is deactivated');
+      throw new UnauthorizedException('User account is deactivated');
 
     const payload = {
       id: user.id,

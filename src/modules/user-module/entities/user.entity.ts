@@ -3,23 +3,44 @@ import { AggregateRoot, IdValueObject, Optional } from "src/shared";
 interface IUserProps {
   email: string;
   phone: string;
-  identityNumber?: string | null;
+  identityNumber: string | null;
   password: string;
-  isActive?: boolean;
-  isVerified?: boolean;
-  isEmailVerified?: boolean;
-  isIdentityVerified?: boolean;
+  isActive: boolean | null;
+  isVerified: boolean | null;
+  isEmailVerified: boolean | null;
+  isIdentityVerified: boolean | null;
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt: Date;
   deletedAt: Date | null;
 }
 
 export class UserEntity extends AggregateRoot<IUserProps> {
-  static create(props: Optional<IUserProps, 'createdAt'>, id?: IdValueObject) {
+  static create(
+    props: Optional<IUserProps,
+      | 'createdAt'
+      | 'updatedAt'
+      | 'isActive'
+      | 'isVerified'
+      | 'isEmailVerified'
+      | 'isIdentityVerified'
+      | 'identityNumber'
+      | 'deletedAt'
+    >,
+    id?: IdValueObject
+  ) {
     return new UserEntity(
       {
-        ...props,
+        email: props.email,
+        phone: props.phone,
+        password: props.password,
+        identityNumber: props.identityNumber ?? null,
         createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? new Date(),
+        deletedAt: props.deletedAt ?? null,
+        isActive: props.isActive ?? true,
+        isVerified: props.isVerified ?? false,
+        isEmailVerified: props.isEmailVerified ?? false,
+        isIdentityVerified: props.isIdentityVerified ?? false,
       },
       id,
     );
@@ -75,8 +96,8 @@ export class UserEntity extends AggregateRoot<IUserProps> {
     return this.props.phone;
   }
 
-  public get identityNumber(): string {
-    return this.props.identityNumber ?? "";
+  public get identityNumber(): string | null {
+    return this.props.identityNumber;
   }
 
   public get password(): string {
@@ -84,7 +105,7 @@ export class UserEntity extends AggregateRoot<IUserProps> {
   }
 
   public get isActive(): boolean {
-    return this.props.isActive ?? false;
+    return this.props.isActive ?? true;
   }
 
   public get isVerified(): boolean {
@@ -104,7 +125,7 @@ export class UserEntity extends AggregateRoot<IUserProps> {
   }
 
   public get updatedAt(): Date {
-    return this.props.updatedAt ?? new Date();
+    return this.props.updatedAt;
   }
 
   public get deletedAt(): Date | null {

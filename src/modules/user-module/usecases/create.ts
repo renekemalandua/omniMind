@@ -15,7 +15,7 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, UserEntity> {
 
   async execute(request: CreateUserDTO) {
     try {
-      const userExist = await this.repository.find(request.email);
+      const userExist = await this.repository.find(request.email, request.phone);
 
       if (userExist)
         throw new BadRequestException('user already exists');
