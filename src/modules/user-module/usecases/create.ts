@@ -32,8 +32,8 @@ export class CreateUserUseCase implements UseCase<CreateUserDTO, UserEntity> {
         exp: GLOBAL_CONFIG.jwtVerifyExp,
       });
 
-      const body = 'Conta criada com sucesso! clique no link abaixo para confirmar o seu email';
-      await this.mailService.send(request.email, body, VerifyToken);
+      //const body = 'Conta criada com sucesso! clique no link abaixo para confirmar o seu email';
+      //await this.mailService.send(request.email, body, VerifyToken);
       return (await this.repository.create(user));
     } catch (error) {
       throw new BadRequestException(error);
