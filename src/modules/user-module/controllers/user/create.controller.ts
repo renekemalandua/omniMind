@@ -12,7 +12,7 @@ export class CreateUserController {
   @ApiBody({ type: CreateUserDTO, description: 'required data to create user' })
   @ApiResponse({ status: 201, description: 'user created successfuly' })
   @ApiResponse({ status: 400, description: 'user already exists' })
-  @Post()
+  @Post('create')
   async create(@Body() data: CreateUserDTO, @Res() response) {
     const user = await this.useCase.execute(data);
     return response.status(201).json({

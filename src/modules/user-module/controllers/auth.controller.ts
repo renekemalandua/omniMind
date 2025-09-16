@@ -5,7 +5,7 @@ import { AuthLoginDTO } from '../dto';
 import { UserAdapter } from '../adapter';
 
 @ApiTags('Auth')
-@Controller('Auth')
+@Controller('auth')
 export class AuthUserController {
   constructor(private readonly useCase: AuthLoginUseCase) {}
 

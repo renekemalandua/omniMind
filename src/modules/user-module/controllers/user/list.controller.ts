@@ -10,7 +10,7 @@ export class ListUserController {
   constructor(private readonly useCase: ListUserUseCase) {}
 
   @ApiOkResponse({ description: 'should return all users' })
-  @Get()
+  @Get('list')
   async list(@Res() response) {
     const user = await this.useCase.execute();
     return response
