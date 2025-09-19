@@ -3,7 +3,7 @@ import { AggregateRoot, IdValueObject, Optional } from "../../../shared";
 interface IKimaAppUserProps {
   userId: string;
   type: HTTP.KimaApp.KimaAppUserType;
-  fullName: string;
+  name: string;
   nif: string | null;
   address: string | null;
   region: string | null;
@@ -37,7 +37,7 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
       {
         userId: props.userId,
         type: props.type,
-        fullName: props.fullName,
+        name: props.name,
         nif: props.nif ?? null,
         address: props.address ?? null,
         region: props.region ?? null,
@@ -81,8 +81,8 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
     return this.props.type;
   }
 
-  public get fullName(): string {
-    return this.props.fullName;
+  public get name(): string {
+    return this.props.name;
   }
 
   public get nif(): string | null {
@@ -126,8 +126,8 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
   }
 
   // ===== Setters =====
-  public set fullName(newName: string) {
-    this.props.fullName = newName;
+  public set name(newName: string) {
+    this.props.name = newName;
     this.touch();
   }
 
