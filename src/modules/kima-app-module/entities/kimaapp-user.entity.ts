@@ -57,18 +57,16 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
     this.props.updatedAt = new Date();
   }
 
-  public static updateAddress(entity: KimaAppUserEntity, address: string) {
-    entity.props.address = address;
-    entity.touch();
-  }
-
-  public static updateRegion(entity: KimaAppUserEntity, region: string) {
-    entity.props.region = region;
-    entity.touch();
-  }
-
-  public static updateVehicle(entity: KimaAppUserEntity, vehicleType: string) {
-    entity.props.vehicleType = vehicleType;
+  public static update(entity: KimaAppUserEntity, data: Partial<Omit<IKimaAppUserProps, 'userId' | 'createdAt'>>) {
+    if (data.name !== undefined) entity.name = data.name;
+    if (data.nif !== undefined) entity.nif = data.nif;
+    if (data.address !== undefined) entity.address = data.address;
+    if (data.region !== undefined) entity.region = data.region;
+    if (data.farmSize !== undefined) entity.farmSize = data.farmSize;
+    if (data.companyType !== undefined) entity.companyType = data.companyType;
+    if (data.vehicleType !== undefined) entity.vehicleType = data.vehicleType;
+    if (data.licenseNumber !== undefined) entity.licenseNumber = data.licenseNumber;
+    if (data.productsCarried !== undefined) entity.productsCarried = data.productsCarried;
     entity.touch();
   }
 
