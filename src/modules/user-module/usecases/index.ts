@@ -13,3 +13,4 @@ export * from './findByPhone';
 export * from './findByIdentityNumber';
 export * from './updatePhone';
 export * from './updateIdentiyNumber';
+export * from './listDeleted';

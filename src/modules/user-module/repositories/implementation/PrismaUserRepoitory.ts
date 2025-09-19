@@ -19,6 +19,19 @@ export class PrismaUserRepository implements IUserRepository {
       orderBy: {
         updatedAt: 'desc',
       },
+      where:{ deletedAt: null }
+    });
+    return (users.map((user) => UserAdapter.toDomain(user)));
+  }
+
+  async listDeleted(): Promise<UserEntity[]> {
+    const users = await this.prisma.user.findMany({
+      orderBy: {
+        updatedAt: 'desc',
+      },
+      where:{
+        NOT: { deletedAt: null }
+      }
     });
     return (users.map((user) => UserAdapter.toDomain(user)));
   }
@@ -27,8 +40,8 @@ export class PrismaUserRepository implements IUserRepository {
     const user = await this.prisma.user.findFirst({
       where: {
         OR: [
-          { email},
-          { phone},
+          { email },
+          { phone },
         ],
       },
     });

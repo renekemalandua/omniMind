@@ -14,7 +14,7 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api/v1', { exclude: [{ path: '', method: RequestMethod.ALL }]});
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+  ///app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
 
   // Swagger
   const swaggerTitle = 'OmniMind';

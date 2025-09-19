@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { IUserRepository, PrismaUserRepository } from './repositories';
 import { AuthUserController } from './controllers/auth.controller';
-import { CreateUserController, ListUserController, VerifyUserEmailController, FindUserByEmailController, FindUserByIdController, UpdateUserPasswordController, UpdateUserEmailController, ResendEmailController, ResetPasswordController, ActivateUserController, DeactivateUserController, DeleteUserController } from './controllers/user';
-import { AuthLoginUseCase, CreateUserUseCase, ListUserUseCase, FindUserByIdUseCase, FindUserByEmailUseCase, UpdateUserPasswordUseCase, UpdateUserEmailUseCase, VerifyEmailUseCase, ResendEmailUseCase, ResetPasswordUseCase, ActivateUserUseCase, DeactivateUserUseCase, DeleteUserUseCase } from './usecases';
+import { CreateUserController, ListUserController, VerifyUserEmailController, FindUserByEmailController, FindUserByIdController, UpdateUserPasswordController, UpdateUserEmailController, ResendEmailController, ResetPasswordController, ActivateUserController, DeactivateUserController, DeleteUserController, ListDeletedUserController, RestoreUserController, FindUserByIdentityNumberController, FindUserByPhoneController, UpdateUserIdentityNumberController, UpdateUserPhoneController } from './controllers/user';
+import { AuthLoginUseCase, CreateUserUseCase, ListUserUseCase, FindUserByIdUseCase, FindUserByEmailUseCase, UpdateUserPasswordUseCase, UpdateUserEmailUseCase, VerifyEmailUseCase, ResendEmailUseCase, ResetPasswordUseCase, ActivateUserUseCase, DeactivateUserUseCase, DeleteUserUseCase, ListDeletedUserUseCase, RestoreUserUseCase, FindUserByIdentityNumberUseCase, FindUserByPhoneUseCase, UpdateUserIdentityNumberUseCase, UpdateUserPhoneUseCase } from './usecases';
 import { ProviderModule } from '../../shared';
-
 
 @Module({
     imports: [ProviderModule],
@@ -12,6 +11,7 @@ import { ProviderModule } from '../../shared';
         AuthUserController,
         CreateUserController,
         ListUserController,
+        ListDeletedUserController,
         VerifyUserEmailController,
         FindUserByEmailController,
         FindUserByIdController,
@@ -22,6 +22,11 @@ import { ProviderModule } from '../../shared';
         ActivateUserController,
         DeactivateUserController,
         DeleteUserController,
+        RestoreUserController,
+        FindUserByIdentityNumberController,
+        FindUserByPhoneController,
+        UpdateUserIdentityNumberController,
+        UpdateUserPhoneController,
     ],
     providers: [
         {
@@ -31,6 +36,7 @@ import { ProviderModule } from '../../shared';
         AuthLoginUseCase,
         CreateUserUseCase,
         ListUserUseCase,
+        ListDeletedUserUseCase,
         FindUserByIdUseCase,
         FindUserByEmailUseCase,
         UpdateUserPasswordUseCase,
@@ -41,6 +47,11 @@ import { ProviderModule } from '../../shared';
         ActivateUserUseCase,
         DeactivateUserUseCase,
         DeleteUserUseCase,
+        RestoreUserUseCase,
+        FindUserByIdentityNumberUseCase,
+        FindUserByPhoneUseCase,
+        UpdateUserIdentityNumberUseCase,
+        UpdateUserPhoneUseCase,
     ],
     exports: [
         IUserRepository,

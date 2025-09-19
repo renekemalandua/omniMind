@@ -3,6 +3,7 @@ import { UserEntity } from '../entities';
 export abstract class IUserRepository {
   abstract create(data: UserEntity): Promise<UserEntity>;
   abstract list(): Promise<UserEntity[]>;
+  abstract listDeleted(): Promise<UserEntity[]>;
   abstract find(email: string, phone: string,): Promise<UserEntity | null>;
   abstract findById(id: string): Promise<UserEntity | null>;
   abstract findByEmail(email: string): Promise<UserEntity | null>;
