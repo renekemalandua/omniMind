@@ -1,6 +1,7 @@
-declare namespace HTTP {
-  declare namespace User {
-    
+declare namespace HTTP 
+{
+  declare namespace User 
+  {
     type UserDetail = {
       id: string;
       email: string;
@@ -37,5 +38,11 @@ declare namespace HTTP {
       token: string;
       user: UserDetail;
     };
+  }
+
+  declare namespace KimaApp
+  {
+    type KimaAppUserType = "farmer" | "company" | "driver" | "seller";
+    type OrderStatus = "pending" | "in_transit" | "delivered" | "canceled";
   }
 }

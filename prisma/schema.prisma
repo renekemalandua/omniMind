@@ -20,4 +20,90 @@ model User {
   deletedAt          DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+
+  kimaAppProfile KimaAppUser?
 }
+
+/**
+ * KimaApp Tables
+ */
+
+model KimaAppUser {
+  id              String          @id @default(uuid())
+  userId          String          @unique
+  type            KimaAppUserType
+  name            String
+  nif             String?         @unique
+  address         String?
+  region          String?
+  farmSize        Float?
+  companyType     String?
+  vehicleType     String?
+  licenseNumber   String?         @unique
+  productsCarried String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  products       Product[]
+  ordersAsBuyer  Order[]   @relation("ordersBuyer")
+  ordersAsDriver Order[]   @relation("ordersDriver")
+  user           User      @relation(fields: [userId], references: [id])
+}
+
+enum KimaAppUserType {
+  farmer
+  company
+  driver
+  seller
+}
+
+model ProductCategory {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  ownerId     String
+  categoryId  String
+  name        String
+  description String?
+  price       Float
+  quantity    Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orders   Order[]
+  owner    KimaAppUser     @relation(fields: [ownerId], references: [id])
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  productId String
+  buyerId   String
+  driverId  String?
+  status    OrderStatus
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  product Product      @relation(fields: [productId], references: [id])
+  driver  KimaAppUser? @relation("ordersDriver", fields: [driverId], references: [id])
+  buyer   KimaAppUser  @relation("ordersBuyer", fields: [buyerId], references: [id])
+}
+
+enum OrderStatus {
+  pending
+  in_transit
+  delivered
+  canceled
+}
+
+/**
+ * End of KimaApp Tables
+ */
