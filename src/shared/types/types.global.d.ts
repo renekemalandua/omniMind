@@ -83,7 +83,6 @@ declare namespace HTTP
       createdAt: Date;
       updatedAt: Date;
       user: User.UserDetail;
-      orders: Order[];
     }
 
     // ==== Driver ====
@@ -106,7 +105,7 @@ declare namespace HTTP
       description: string | null;
       createdAt: Date;
       updatedAt: Date;
-      products: Product[];
+      products: ProductResponse[];
     }
 
     type ProductResponse = {
@@ -118,8 +117,8 @@ declare namespace HTTP
       createdAt: Date;
       updatedAt: Date;
 
-      owner: KimaAppUser;
-      category: ProductCategory;
+      owner: FarmerUserResponse;
+      category: ProductCategoryResponse;
     }
 
     type OrderResponse = {
@@ -129,8 +128,8 @@ declare namespace HTTP
       updatedAt: Date;
 
       product: Product;
-      driver: KimaAppUser | null;
-      buyer: KimaAppUser;
+      driver: DriverUserResponse | null;
+      buyer: CompanyUserResponse | SellerUserResponse;
     }
   }
 }
