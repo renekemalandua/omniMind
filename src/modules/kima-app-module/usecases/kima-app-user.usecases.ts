@@ -32,19 +32,6 @@ export class ListKimaAppUsersUseCase implements UseCase<void, KimaAppUserEntity[
 }
 
 @Injectable()
-export class ListDeletedKimaAppUsersUseCase implements UseCase<void, KimaAppUserEntity[]> {
-    constructor(private readonly repository: IKimaAppUserRepository) { }
-
-    async execute(): Promise<KimaAppUserEntity[]> {
-        try {
-            return await this.repository.listDeleted();
-        } catch (error) {
-            throw new BadRequestException(error);
-        }
-    }
-}
-
-@Injectable()
 export class FindKimaAppUserByIdUseCase implements UseCase<string, KimaAppUserEntity | null> {
     constructor(private readonly repository: IKimaAppUserRepository) { }
 
@@ -68,27 +55,5 @@ export class UpdateKimaAppUserUseCase implements UseCase<{ id: string; data: Upd
         } catch (error) {
             throw new BadRequestException(error);
         }
-    }
-}
-
-@Injectable()
-export class DeleteKimaAppUserUseCase implements UseCase<string, void> {
-    constructor(private readonly repository: IKimaAppUserRepository) { }
-
-    async execute(id: string): Promise<void> {
-        const entity = await this.repository.findById(id);
-        if (!entity) throw new BadRequestException('User not found');
-        await this.repository.delete(id);
-    }
-}
-
-@Injectable()
-export class RestoreKimaAppUserUseCase implements UseCase<string, KimaAppUserEntity> {
-    constructor(private readonly repository: IKimaAppUserRepository) { }
-
-    async execute(id: string): Promise<KimaAppUserEntity> {
-        const entity = await this.repository.findById(id);
-        if (!entity) throw new BadRequestException('User not found');
-        return await this.repository.restore(id);
     }
 }
