@@ -4,4 +4,5 @@ export * from './repositories';
 export * from './usecases';
 export * from './adapter';
 export * from './utils';
-export * from './constrollers';
+export * from './controllers';
+export * from './kima-app.module';
