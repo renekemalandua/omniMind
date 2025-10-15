@@ -96,3 +96,14 @@ export class ListProductsByCategoryUseCase implements UseCase<string, ProductEnt
         return this.repository.listByCategory(categoryId);
     }
 }
+
+@Injectable()
+export class FindProductByIdUseCase implements UseCase<string, ProductEntity | null> {
+	constructor(private readonly repository: IProductRepository) { }
+
+	async execute(id: string): Promise<ProductEntity | null> {
+		const entity = await this.repository.findById(id);
+		if (!entity) throw new BadRequestException('Product not found');
+		return entity;
+	}
+}
