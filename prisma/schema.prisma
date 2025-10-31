@@ -1,27 +1,29 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id                 String    @id @default(uuid())
-  email              String    @unique
-  phone              String    @unique
-  identityNumber     String?   @unique
-  password           String
-  isActive           Boolean   @default(true)
-  isVerified         Boolean   @default(false)
-  isEmailVerified    Boolean   @default(false)
-  isIdentityVerified Boolean   @default(false)
-  deletedAt          DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+    id                 String    @id @default(uuid())
+    email              String    @unique
+    phone              String    @unique
+    identityNumber     String?   @unique
+    password           String
+    isActive           Boolean   @default(true)
+    isVerified         Boolean   @default(false)
+    isEmailVerified    Boolean   @default(false)
+    isIdentityVerified Boolean   @default(false)
+    deletedAt          DateTime?
+    createdAt          DateTime  @default(now())
+    updatedAt          DateTime  @updatedAt
 
-  kimaAppProfile KimaAppUser?
+    verificationRequests VerificationRequest[]
+    kimaAppProfile       KimaAppUser?
+    larAngolaProfile     LarAngolaUser?
 }
 
 /**
@@ -29,81 +31,373 @@ model User {
  */
 
 model KimaAppUser {
-  id              String          @id @default(uuid())
-  userId          String          @unique
-  type            KimaAppUserType
-  name            String
-  nif             String?         @unique
-  address         String?
-  region          String?
-  farmSize        Float?
-  companyType     String?
-  vehicleType     String?
-  licenseNumber   String?         @unique
-  productsCarried String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+    id              String          @id @default(uuid())
+    image           String? // novo
+    userId          String          @unique
+    type            KimaAppUserType
+    name            String
+    nif             String?         @unique
+    address         String?
+    region          String?
+    farmSize        Float?
+    companyType     String?
+    vehicleType     String?
+    licenseNumber   String?         @unique
+    productsCarried String?
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
 
-  products       Product[]
-  ordersAsBuyer  Order[]   @relation("ordersBuyer")
-  ordersAsDriver Order[]   @relation("ordersDriver")
-  user           User      @relation(fields: [userId], references: [id])
+    products       Product[]
+    ordersAsBuyer  Order[]   @relation("ordersBuyer")
+    ordersAsDriver Order[]   @relation("ordersDriver")
+    user           User      @relation(fields: [userId], references: [id])
+
+    // 🔽 New relations
+    ratings              Rating[]
+    deliveryJob          DeliveryJob?
+    premiumSubscriptions PremiumSubscription[]
+    transactionsSent     Transaction[]         @relation("TransactionFromUser")
+    transactionsReceived Transaction[]         @relation("TransactionToUser")
+    driverRequestsMade   DriverRequest[]       @relation("RequestRequester")
+    driverRequestsTaken  DriverRequest[]       @relation("RequestDriver")
 }
 
 enum KimaAppUserType {
-  farmer
-  company
-  driver
-  seller
+    farmer
+    company
+    driver
+    seller
 }
 
 model ProductCategory {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+    id          String   @id @default(uuid())
+    name        String
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
-  products Product[]
+    products Product[]
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  ownerId     String
-  categoryId  String
-  name        String
-  description String?
-  price       Float
-  quantity    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+    id          String   @id @default(uuid())
+    name        String
+    image       String? // novo
+    ownerId     String
+    categoryId  String
+    description String?
+    price       Float
+    quantity    Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
-  orders   Order[]
-  owner    KimaAppUser     @relation(fields: [ownerId], references: [id])
-  category ProductCategory @relation(fields: [categoryId], references: [id])
+    orders   OrderProduct[]
+    owner    KimaAppUser     @relation(fields: [ownerId], references: [id])
+    category ProductCategory @relation(fields: [categoryId], references: [id])
+    ratings  Rating[]
 }
 
 model Order {
-  id        String      @id @default(uuid())
-  productId String
-  buyerId   String
-  driverId  String?
-  status    OrderStatus
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+    id         String      @id @default(uuid())
+    buyerId    String
+    driverId   String?
+    totalPrice Float       @default(0)
+    status     OrderStatus
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
 
-  product Product      @relation(fields: [productId], references: [id])
-  driver  KimaAppUser? @relation("ordersDriver", fields: [driverId], references: [id])
-  buyer   KimaAppUser  @relation("ordersBuyer", fields: [buyerId], references: [id])
+    driver   KimaAppUser?   @relation("ordersDriver", fields: [driverId], references: [id])
+    buyer    KimaAppUser    @relation("ordersBuyer", fields: [buyerId], references: [id])
+    products OrderProduct[]
+
+    // 🔽 new relations
+    deliveryJob    DeliveryJob?
+    transactions   Transaction[]
+    driverRequests DriverRequest[]
+}
+
+model OrderProduct {
+    id         String   @id @default(uuid())
+    orderId    String
+    productId  String
+    quantity   Int      @default(1)
+    unitPrice  Float    @default(0)
+    totalPrice Float    @default(0)
+    createdAt  DateTime @default(now())
+
+    order   Order   @relation(fields: [orderId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+
+    @@unique([orderId, productId])
 }
 
 enum OrderStatus {
-  pending
-  in_transit
-  delivered
-  canceled
+    pending
+    in_transit
+    delivered
+    canceled
+}
+
+enum PaymentMethod {
+    unitel_money
+    ussd
+    card
+}
+
+/**
+ * Extended Tables
+ */
+
+model Rating {
+    id        String   @id @default(uuid())
+    productId String
+    userId    String
+    rating    Int
+    comment   String?
+    createdAt DateTime @default(now())
+
+    product Product     @relation(fields: [productId], references: [id])
+    user    KimaAppUser @relation(fields: [userId], references: [id])
+}
+
+model DeliveryJob {
+    id               String            @id @default(uuid())
+    orderId          String            @unique
+    pickupLocation   String
+    deliveryLocation String
+    driverId         String?           @unique
+    status           DeliveryJobStatus @default(available)
+    price            Float
+    distance         Float?
+    estimatedTime    String?
+    createdAt        DateTime          @default(now())
+
+    order  Order        @relation(fields: [orderId], references: [id])
+    driver KimaAppUser? @relation(fields: [driverId], references: [id])
+}
+
+enum DeliveryJobStatus {
+    available
+    accepted
+    in_transit
+    delivered
+}
+
+model VerificationRequest {
+    id        String             @id @default(uuid())
+    userId    String
+    docType   DocumentType
+    document  String
+    status    VerificationStatus @default(pending)
+    createdAt DateTime           @default(now())
+
+    user User @relation(fields: [userId], references: [id])
+}
+
+enum DocumentType {
+    BI
+    NIF
+}
+
+enum VerificationStatus {
+    pending
+    approved
+    rejected
+}
+
+model PremiumSubscription {
+    id            String             @id @default(uuid())
+    userId        String
+    planType      PlanType
+    amount        Float
+    startDate     DateTime
+    endDate       DateTime
+    status        SubscriptionStatus @default(active)
+    paymentMethod PaymentMethod
+    createdAt     DateTime           @default(now())
+
+    user         KimaAppUser   @relation(fields: [userId], references: [id])
+    transactions Transaction[]
+}
+
+enum PlanType {
+    basic
+    premium
+    enterprise
+}
+
+enum SubscriptionStatus {
+    active
+    canceled
+    expired
+}
+
+model Transaction {
+    id             String            @id @default(uuid())
+    type           TransactionType
+    orderId        String?
+    subscriptionId String?
+    fromUserId     String?
+    toUserId       String?
+    amount         Float
+    commissionRate Float?
+    description    String
+    status         TransactionStatus @default(pending)
+    createdAt      DateTime          @default(now())
+
+    order        Order?               @relation(fields: [orderId], references: [id])
+    subscription PremiumSubscription? @relation(fields: [subscriptionId], references: [id])
+    fromUser     KimaAppUser?         @relation("TransactionFromUser", fields: [fromUserId], references: [id])
+    toUser       KimaAppUser?         @relation("TransactionToUser", fields: [toUserId], references: [id])
+}
+
+enum TransactionType {
+    commission
+    payment
+    premium_subscription
+    driver_fee
+}
+
+enum TransactionStatus {
+    pending
+    processing
+    completed
+    failed
+}
+
+model DriverRequest {
+    id               String              @id @default(uuid())
+    orderId          String
+    requesterId      String
+    pickupLocation   String
+    deliveryLocation String
+    productName      String
+    weight           Float?
+    distance         Float?
+    suggestedPrice   Float
+    status           DriverRequestStatus @default(pending)
+    driverId         String?
+    createdAt        DateTime            @default(now())
+
+    order     Order        @relation(fields: [orderId], references: [id])
+    requester KimaAppUser  @relation("RequestRequester", fields: [requesterId], references: [id])
+    driver    KimaAppUser? @relation("RequestDriver", fields: [driverId], references: [id])
+}
+
+enum DriverRequestStatus {
+    pending
+    accepted
+    rejected
+    completed
 }
 
 /**
  * End of KimaApp Tables
+ */
+
+/**
+ * LarAngola Tables
+ */
+
+enum TransactionTypeLA {
+    rent
+    sale
+}
+
+enum ListingStatusLA {
+    active
+    inactive
+}
+
+enum LarAngolaUserRole {
+    intermediary
+    client
+}
+
+model PropertyCategoryLA {
+    id          String   @id @default(uuid())
+    name        String
+    description String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    properties PropertyLA[]
+}
+
+model PropertyLA {
+    id          String   @id @default(uuid())
+    ownerId     String
+    categoryId  String
+    title       String
+    description String?
+    address     String?
+    city        String?
+    state       String?
+    country     String?
+    latitude    Float?
+    longitude   Float?
+    bedrooms    Int?
+    bathrooms   Int?
+    areaSqm     Float?
+    amenities   Json?
+    images      Json?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    owner    LarAngolaUser      @relation(fields: [ownerId], references: [id])
+    category PropertyCategoryLA @relation(fields: [categoryId], references: [id])
+    listings ListingLA[]
+}
+
+model ListingLA {
+    id              String            @id @default(uuid())
+    propertyId      String
+    ownerId         String
+    transactionType TransactionTypeLA
+    price           Float
+    currency        String            @default("AOA")
+    status          ListingStatusLA   @default(active)
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+
+    property  PropertyLA    @relation(fields: [propertyId], references: [id])
+    owner     LarAngolaUser @relation(fields: [ownerId], references: [id])
+    inquiries InquiryLA[]
+}
+
+model InquiryLA {
+    id        String   @id @default(uuid())
+    listingId String
+    userId    String?
+    name      String
+    email     String
+    phone     String?
+    message   String
+    createdAt DateTime @default(now())
+
+    listing ListingLA      @relation(fields: [listingId], references: [id])
+    user    LarAngolaUser? @relation(fields: [userId], references: [id])
+}
+
+model LarAngolaUser {
+    id          String            @id @default(uuid())
+    userId      String            @unique
+    role        LarAngolaUserRole
+    fullName    String
+    phone       String?
+    city        String?
+    preferences Json?
+    createdAt   DateTime          @default(now())
+    updatedAt   DateTime          @updatedAt
+
+    user User @relation(fields: [userId], references: [id])
+
+    // Back-relations
+    properties PropertyLA[]
+    listings   ListingLA[]
+    inquiries  InquiryLA[]
+}
+
+/**
+ * End of LarAngola Tables
  */

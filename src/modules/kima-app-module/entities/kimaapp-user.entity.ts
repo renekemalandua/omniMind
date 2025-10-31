@@ -4,6 +4,7 @@ interface IKimaAppUserProps {
   userId: string;
   type: HTTP.KimaApp.KimaAppUserType;
   name: string;
+  image: string | null;
   nif: string | null;
   address: string | null;
   region: string | null;
@@ -23,6 +24,7 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
       | "createdAt"
       | "updatedAt"
       | "nif"
+      | "image"
       | "address"
       | "region"
       | "farmSize"
@@ -39,6 +41,7 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
         type: props.type,
         name: props.name,
         nif: props.nif ?? null,
+        image: props.image ?? null,
         address: props.address ?? null,
         region: props.region ?? null,
         farmSize: props.farmSize ?? null,
@@ -60,6 +63,7 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
   public static update(entity: KimaAppUserEntity, data: Partial<Omit<IKimaAppUserProps, 'userId' | 'createdAt'>>) {
     if (data.name !== undefined) entity.name = data.name;
     if (data.nif !== undefined) entity.nif = data.nif;
+    if (data.image !== undefined) entity.image = data.image;
     if (data.address !== undefined) entity.address = data.address;
     if (data.region !== undefined) entity.region = data.region;
     if (data.farmSize !== undefined) entity.farmSize = data.farmSize;
@@ -83,9 +87,14 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
     return this.props.name;
   }
 
+  public get image(): string | null {
+    return this.props.image;
+  }
+
   public get nif(): string | null {
     return this.props.nif;
   }
+
 
   public get address(): string | null {
     return this.props.address;
@@ -126,6 +135,11 @@ export class KimaAppUserEntity extends AggregateRoot<IKimaAppUserProps> {
   // ===== Setters =====
   public set name(newName: string) {
     this.props.name = newName;
+    this.touch();
+  }
+
+  public set image(image: string | null) {
+    this.props.image = image;
     this.touch();
   }
 

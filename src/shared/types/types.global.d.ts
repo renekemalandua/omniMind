@@ -1,6 +1,6 @@
-declare namespace HTTP 
+declare namespace HTTP
 {
-  declare namespace User 
+  declare namespace User
   {
     type UserDetail = {
       id: string;
@@ -49,6 +49,7 @@ declare namespace HTTP
       id: string;
       type: KimaAppUserType;
       name: string;
+      image: string | null;
       nif: string | null;
       address: string | null;
       region: string | null;
@@ -63,6 +64,7 @@ declare namespace HTTP
       id: string;
       type: KimaAppUserType;
       name: string;
+	  image: string | null;
       nif: string | null;
       address: string | null;
       region: string | null;
@@ -77,6 +79,7 @@ declare namespace HTTP
       id: string;
       type: KimaAppUserType;
       name: string;
+	  image: string | null;
       address: string | null;
       region: string | null;
       productsCarried: string;
@@ -90,6 +93,7 @@ declare namespace HTTP
       id: string;
       type: KimaAppUserType;
       name: string;
+	  image: string | null;
       address: string | null;
       region: string | null;
       vehicleType: string;
@@ -111,6 +115,7 @@ declare namespace HTTP
     type ProductResponse = {
       id: string;
       name: string;
+	  image: string | null;
       description: string | null;
       price: number;
       quantity: number;
