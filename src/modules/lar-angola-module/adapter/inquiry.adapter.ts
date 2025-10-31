@@ -1,9 +1,9 @@
-import { InquiryLA } from '@prisma/client';
+// Using untyped prisma row to avoid coupling to generated client types here
 import { InquiryEntity } from '../entities';
 import { IdValueObject } from '../../../shared';
 
 export class InquiryAdapter {
-	static toDomain(raw: InquiryLA): InquiryEntity {
+	static toDomain(raw: any): InquiryEntity {
 		return InquiryEntity.create(
 			{
 				listingId: raw.listingId,
@@ -18,7 +18,7 @@ export class InquiryAdapter {
 		);
 	}
 
-	static toPrisma(entity: InquiryEntity): InquiryLA {
+	static toPrisma(entity: InquiryEntity): any {
 		return {
 			id: entity.id,
 			listingId: entity.listingId,
@@ -31,7 +31,11 @@ export class InquiryAdapter {
 		};
 	}
 
-	static toHttp(entity: InquiryEntity, listing: any, user: any | null) {
+	static toHttp(
+		entity: InquiryEntity,
+		listing: HTTP.LarAngola.ListingResponse | { id: string } | null,
+		user: HTTP.LarAngola.UserResponse | null,
+	): HTTP.LarAngola.InquiryResponse {
 		return {
 			id: entity.id,
 			name: entity.name,
@@ -39,7 +43,7 @@ export class InquiryAdapter {
 			phone: entity.phone,
 			message: entity.message,
 			createdAt: entity.createdAt,
-			listing,
+			listingId: entity.listingId,
 			user,
 		};
 	}

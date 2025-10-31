@@ -33,13 +33,17 @@ export class ListingAdapter {
 		};
 	}
 
-	static toHttp(entity: ListingEntity, property: any, owner: any) {
+	static toHttp(
+		entity: ListingEntity,
+		property: HTTP.LarAngola.PropertyResponse,
+		owner: HTTP.LarAngola.UserResponse,
+	): HTTP.LarAngola.ListingResponse {
 		return {
 			id: entity.id,
-			transactionType: entity.transactionType,
+			transactionType: entity.transactionType as any,
 			price: entity.price,
 			currency: entity.currency,
-			status: entity.status,
+			status: entity.status as any,
 			createdAt: entity.createdAt,
 			updatedAt: entity.updatedAt,
 			property,

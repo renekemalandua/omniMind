@@ -1,9 +1,9 @@
-import { PropertyLA } from '@prisma/client';
+// Using untyped prisma row to avoid coupling to generated client types here
 import { PropertyEntity } from '../entities';
 import { IdValueObject } from '../../../shared';
 
 export class PropertyAdapter {
-	static toDomain(raw: PropertyLA): PropertyEntity {
+	static toDomain(raw: any): PropertyEntity {
 		return PropertyEntity.create(
 			{
 				ownerId: raw.ownerId,
@@ -28,7 +28,7 @@ export class PropertyAdapter {
 		);
 	}
 
-	static toPrisma(entity: PropertyEntity): PropertyLA {
+	static toPrisma(entity: PropertyEntity): any {
 		return {
 			id: entity.id,
 			ownerId: entity.ownerId,
@@ -51,7 +51,11 @@ export class PropertyAdapter {
 		};
 	}
 
-	static toHttp(entity: PropertyEntity, owner: any, category: any) {
+	static toHttp(
+		entity: PropertyEntity,
+		owner: HTTP.LarAngola.UserResponse,
+		category: HTTP.LarAngola.PropertyCategoryResponse,
+	): HTTP.LarAngola.PropertyResponse {
 		return {
 			id: entity.id,
 			title: entity.title,
