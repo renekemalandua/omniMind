@@ -9,7 +9,7 @@ export class PrismaLarAngolaUserRepository implements ILarAngolaUserRepository {
 	constructor(private readonly prisma: PrismaService) { }
 
 	async create(data: LarAngolaUserEntity): Promise<LarAngolaUserEntity> {
-		const raw = LarAngolaUserAdapter.toPrisma(data);
+		const raw = LarAngolaUserAdapter.toPrisma(data) as any;
 		const created = await this.prisma.larAngolaUser.create({ data: raw });
 		return LarAngolaUserAdapter.toDomain(created);
 	}
@@ -17,7 +17,7 @@ export class PrismaLarAngolaUserRepository implements ILarAngolaUserRepository {
 	async update(data: LarAngolaUserEntity): Promise<LarAngolaUserEntity> {
 		const exists = await this.prisma.larAngolaUser.findUnique({ where: { id: data.id } });
 		if (!exists) throw new NotFoundException('LarAngolaUser not found');
-		const raw = LarAngolaUserAdapter.toPrisma(data);
+		const raw = LarAngolaUserAdapter.toPrisma(data) as any;
 		const updated = await this.prisma.larAngolaUser.update({ where: { id: data.id }, data: raw });
 		return LarAngolaUserAdapter.toDomain(updated);
 	}

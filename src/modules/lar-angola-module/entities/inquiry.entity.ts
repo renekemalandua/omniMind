@@ -41,3 +41,4 @@ export class InquiryEntity extends AggregateRoot<IInquiryProps> {
 }
 
 
+

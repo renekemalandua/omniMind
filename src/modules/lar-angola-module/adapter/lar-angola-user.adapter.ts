@@ -1,17 +1,17 @@
-// Using untyped prisma row to avoid coupling to generated client types here
+import { LarAngolaUser, Prisma } from '@prisma/client';
 import { LarAngolaUserEntity } from '../entities/lar-angola-user.entity';
 import { IdValueObject } from '../../../shared';
 
 export class LarAngolaUserAdapter {
-	static toDomain(raw: any): LarAngolaUserEntity {
+	static toDomain(raw: LarAngolaUser): LarAngolaUserEntity {
 		return LarAngolaUserEntity.create(
 			{
 				userId: raw.userId,
-				role: raw.role as any,
+				role: raw.role,
 				fullName: raw.fullName,
-				phone: raw.phone,
-				city: raw.city,
-				preferences: raw.preferences,
+				phone: raw.phone ?? null,
+				city: raw.city ?? null,
+				preferences: raw.preferences ?? null,
 				createdAt: raw.createdAt,
 				updatedAt: raw.updatedAt,
 			},
@@ -19,18 +19,18 @@ export class LarAngolaUserAdapter {
 		);
 	}
 
-	static toPrisma(entity: LarAngolaUserEntity): any {
+	static toPrisma(entity: LarAngolaUserEntity): LarAngolaUser {
 		return {
 			id: entity.id,
 			userId: entity.userId,
-			role: entity.role as any,
+			role: entity.role,
 			fullName: entity.fullName,
-			phone: entity.phone as any,
-			city: entity.city as any,
-			preferences: entity.preferences as any,
+			phone: entity.phone ?? null,
+			city: entity.city ?? null,
+			preferences: (entity.preferences as any) ?? null,
 			createdAt: entity.createdAt,
 			updatedAt: entity.updatedAt,
-		} as any;
+		};
 	}
 
 	static toHttp(entity: LarAngolaUserEntity): HTTP.LarAngola.UserResponse {
@@ -47,5 +47,4 @@ export class LarAngolaUserAdapter {
 		};
 	}
 }
-
 

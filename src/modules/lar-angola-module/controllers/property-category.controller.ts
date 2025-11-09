@@ -43,7 +43,7 @@ export class PropertyCategoryController {
 	async list(@Res() response) {
 		try {
 			const entities = await this.listUseCase.execute();
-			const data = entities.map(PropertyCategoryAdapter.toHttp);
+			const data = entities.map((entity) => PropertyCategoryAdapter.toHttp(entity));
 			return response.status(200).json({ status: true, data });
 		} catch (error) {
 			throw new BadRequestException(error.message);
@@ -94,5 +94,6 @@ export class PropertyCategoryController {
 		}
 	}
 }
+
 
 

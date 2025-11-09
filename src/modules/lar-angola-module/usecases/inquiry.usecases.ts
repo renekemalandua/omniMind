@@ -45,3 +45,4 @@ export class DeleteInquiryUseCase implements UseCase<string, void> {
 }
 
 
+

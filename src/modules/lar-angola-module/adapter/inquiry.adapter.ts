@@ -1,16 +1,16 @@
-// Using untyped prisma row to avoid coupling to generated client types here
+import { InquiryLA } from '@prisma/client';
 import { InquiryEntity } from '../entities';
 import { IdValueObject } from '../../../shared';
 
 export class InquiryAdapter {
-	static toDomain(raw: any): InquiryEntity {
+	static toDomain(raw: InquiryLA): InquiryEntity {
 		return InquiryEntity.create(
 			{
 				listingId: raw.listingId,
-				userId: raw.userId,
+				userId: raw.userId ?? null,
 				name: raw.name,
 				email: raw.email,
-				phone: raw.phone,
+				phone: raw.phone ?? null,
 				message: raw.message,
 				createdAt: raw.createdAt,
 			},
@@ -18,14 +18,14 @@ export class InquiryAdapter {
 		);
 	}
 
-	static toPrisma(entity: InquiryEntity): any {
+	static toPrisma(entity: InquiryEntity): InquiryLA {
 		return {
 			id: entity.id,
 			listingId: entity.listingId,
-			userId: entity.userId as any,
+			userId: entity.userId ?? null,
 			name: entity.name,
 			email: entity.email,
-			phone: entity.phone as any,
+			phone: entity.phone ?? null,
 			message: entity.message,
 			createdAt: entity.createdAt,
 		};

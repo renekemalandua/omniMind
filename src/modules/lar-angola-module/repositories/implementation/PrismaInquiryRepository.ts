@@ -32,3 +32,4 @@ export class PrismaInquiryRepository implements IInquiryRepository {
 }
 
 
+

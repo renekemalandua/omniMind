@@ -9,7 +9,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
 	constructor(private readonly prisma: PrismaService) { }
 
 	async create(data: PropertyEntity): Promise<PropertyEntity> {
-		const raw = PropertyAdapter.toPrisma(data);
+		const raw = PropertyAdapter.toPrisma(data) as any;
 		const created = await this.prisma.propertyLA.create({ data: raw });
 		return PropertyAdapter.toDomain(created);
 	}
@@ -37,7 +37,7 @@ export class PrismaPropertyRepository implements IPropertyRepository {
 	async update(data: PropertyEntity): Promise<PropertyEntity> {
 		const exists = await this.prisma.propertyLA.findUnique({ where: { id: data.id } });
 		if (!exists) throw new NotFoundException('Property not found');
-		const raw = PropertyAdapter.toPrisma(data);
+		const raw = PropertyAdapter.toPrisma(data) as any;
 		const updated = await this.prisma.propertyLA.update({ where: { id: data.id }, data: raw });
 		return PropertyAdapter.toDomain(updated);
 	}
@@ -48,5 +48,6 @@ export class PrismaPropertyRepository implements IPropertyRepository {
 		await this.prisma.propertyLA.delete({ where: { id } });
 	}
 }
+
 
 

@@ -31,7 +31,6 @@ export class LarAngolaUserEntity extends AggregateRoot<ILarAngolaUserProps> {
 		);
 	}
 
-	get id() { return this._id!.value; }
 	get userId() { return this.props.userId; }
 	get role() { return this.props.role; }
 	get fullName() { return this.props.fullName; }
