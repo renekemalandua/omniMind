@@ -4,6 +4,7 @@ import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 export enum LarAngolaUserRoleDTO {
 	intermediary = 'intermediary',
 	client = 'client',
+	company = 'company',
 }
 
 export class CreateLarAngolaUserRequestDTO {

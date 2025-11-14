@@ -7,6 +7,7 @@ import {
 	ListingController,
 	InquiryController,
 	LarAngolaUserController,
+	LarAngolaRegisterController,
 } from './controllers';
 import {
 	IPropertyCategoryRepository, IPropertyRepository, IListingRepository, IInquiryRepository, ILarAngolaUserRepository,
@@ -16,7 +17,7 @@ import {
 	CreatePropertyCategoryUseCase, UpdatePropertyCategoryUseCase, DeletePropertyCategoryUseCase, ListPropertyCategoriesUseCase, FindPropertyCategoryByIdUseCase,
 	CreatePropertyUseCase, UpdatePropertyUseCase, DeletePropertyUseCase, ListPropertiesUseCase, ListPropertiesByOwnerUseCase, ListPropertiesByCategoryUseCase, FindPropertyByIdUseCase,
 	CreateListingUseCase, UpdateListingUseCase, DeleteListingUseCase, ListListingsUseCase, ListListingsByOwnerUseCase, ListListingsByPropertyUseCase, FindListingByIdUseCase,
-	CreateInquiryUseCase, DeleteInquiryUseCase, ListInquiriesByListingUseCase, FindInquiryByIdUseCase, CreateLarAngolaUserUseCase, UpdateLarAngolaUserUseCase, DeleteLarAngolaUserUseCase, ListLarAngolaUsersUseCase, FindLarAngolaUserByIdUseCase,
+	CreateInquiryUseCase, DeleteInquiryUseCase, ListInquiriesByListingUseCase, FindInquiryByIdUseCase, CreateLarAngolaUserUseCase, UpdateLarAngolaUserUseCase, DeleteLarAngolaUserUseCase, ListLarAngolaUsersUseCase, FindLarAngolaUserByIdUseCase, RegisterLarAngolaUserUseCase,
 } from './usecases';
 import { HttpBuilder } from './utils';
 
@@ -28,6 +29,7 @@ import { HttpBuilder } from './utils';
 		ListingController,
 		InquiryController,
 		LarAngolaUserController,
+		LarAngolaRegisterController,
 	],
 	providers: [
 		{ provide: IPropertyCategoryRepository, useClass: PrismaPropertyCategoryRepository },
@@ -70,6 +72,7 @@ import { HttpBuilder } from './utils';
 		DeleteLarAngolaUserUseCase,
 		ListLarAngolaUsersUseCase,
 		FindLarAngolaUserByIdUseCase,
+		RegisterLarAngolaUserUseCase,
 	],
 	exports: [
 		FindPropertyByIdUseCase,

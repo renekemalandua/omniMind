@@ -137,7 +137,7 @@ declare namespace HTTP {
 	}
 
 	declare namespace LarAngola {
-		type LarAngolaUserRole = "intermediary" | "client";
+		type LarAngolaUserRole = "intermediary" | "client" | "company";
 
 		type UserResponse = {
 			id: string;

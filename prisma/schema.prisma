@@ -312,6 +312,7 @@ enum ListingStatusLA {
 enum LarAngolaUserRole {
     intermediary
     client
+    company
 }
 
 model PropertyCategoryLA {

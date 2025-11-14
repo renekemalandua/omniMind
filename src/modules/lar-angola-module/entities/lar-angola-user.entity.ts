@@ -1,6 +1,6 @@
 import { AggregateRoot, IdValueObject, Optional } from "../../../shared";
 
-export type LarAngolaUserRole = 'intermediary' | 'client';
+export type LarAngolaUserRole = 'intermediary' | 'client' | 'company';
 
 interface ILarAngolaUserProps {
 	userId: string;
