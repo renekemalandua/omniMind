@@ -138,6 +138,7 @@ declare namespace HTTP {
 
 	declare namespace LarAngola {
 		type LarAngolaUserRole = "intermediary" | "client" | "company";
+		type VerificationStatus = "pending" | "approved" | "rejected";
 
 		type UserResponse = {
 			id: string;
@@ -147,6 +148,9 @@ declare namespace HTTP {
 			phone: string | null;
 			city: string | null;
 			preferences?: unknown | null;
+			isVerified: boolean;
+			verificationStatus: VerificationStatus;
+			verificationData?: unknown | null;
 			createdAt: Date;
 			updatedAt: Date;
 		};

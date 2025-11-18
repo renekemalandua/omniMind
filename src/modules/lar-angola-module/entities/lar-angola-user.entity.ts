@@ -1,6 +1,7 @@
 import { AggregateRoot, IdValueObject, Optional } from "../../../shared";
 
 export type LarAngolaUserRole = 'intermediary' | 'client' | 'company';
+export type VerificationStatus = 'pending' | 'approved' | 'rejected';
 
 interface ILarAngolaUserProps {
 	userId: string;
@@ -9,13 +10,16 @@ interface ILarAngolaUserProps {
 	phone: string | null;
 	city: string | null;
 	preferences: unknown | null;
+	isVerified: boolean;
+	verificationStatus: VerificationStatus;
+	verificationData: unknown | null;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export class LarAngolaUserEntity extends AggregateRoot<ILarAngolaUserProps> {
 	static create(
-		props: Optional<ILarAngolaUserProps, "phone" | "city" | "preferences" | "createdAt" | "updatedAt">,
+		props: Optional<ILarAngolaUserProps, "phone" | "city" | "preferences" | "isVerified" | "verificationStatus" | "verificationData" | "createdAt" | "updatedAt">,
 		id?: IdValueObject,
 	) {
 		return new LarAngolaUserEntity(
@@ -24,6 +28,9 @@ export class LarAngolaUserEntity extends AggregateRoot<ILarAngolaUserProps> {
 				phone: props.phone ?? null,
 				city: props.city ?? null,
 				preferences: props.preferences ?? null,
+				isVerified: props.isVerified ?? false,
+				verificationStatus: props.verificationStatus ?? 'pending',
+				verificationData: props.verificationData ?? null,
 				createdAt: props.createdAt ?? new Date(),
 				updatedAt: props.updatedAt ?? new Date(),
 			},
@@ -37,6 +44,9 @@ export class LarAngolaUserEntity extends AggregateRoot<ILarAngolaUserProps> {
 	get phone() { return this.props.phone; }
 	get city() { return this.props.city; }
 	get preferences() { return this.props.preferences; }
+	get isVerified() { return this.props.isVerified; }
+	get verificationStatus() { return this.props.verificationStatus; }
+	get verificationData() { return this.props.verificationData; }
 	get createdAt() { return this.props.createdAt; }
 	get updatedAt() { return this.props.updatedAt; }
 
@@ -44,6 +54,9 @@ export class LarAngolaUserEntity extends AggregateRoot<ILarAngolaUserProps> {
 	set phone(v: string | null) { this.props.phone = v; }
 	set city(v: string | null) { this.props.city = v; }
 	set preferences(v: unknown | null) { this.props.preferences = v; }
+	set isVerified(v: boolean) { this.props.isVerified = v; }
+	set verificationStatus(v: VerificationStatus) { this.props.verificationStatus = v; }
+	set verificationData(v: unknown | null) { this.props.verificationData = v; }
 }
 
 

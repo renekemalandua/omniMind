@@ -17,7 +17,7 @@ import {
 	CreatePropertyCategoryUseCase, UpdatePropertyCategoryUseCase, DeletePropertyCategoryUseCase, ListPropertyCategoriesUseCase, FindPropertyCategoryByIdUseCase,
 	CreatePropertyUseCase, UpdatePropertyUseCase, DeletePropertyUseCase, ListPropertiesUseCase, ListPropertiesByOwnerUseCase, ListPropertiesByCategoryUseCase, FindPropertyByIdUseCase,
 	CreateListingUseCase, UpdateListingUseCase, DeleteListingUseCase, ListListingsUseCase, ListListingsByOwnerUseCase, ListListingsByPropertyUseCase, FindListingByIdUseCase,
-	CreateInquiryUseCase, DeleteInquiryUseCase, ListInquiriesByListingUseCase, FindInquiryByIdUseCase, CreateLarAngolaUserUseCase, UpdateLarAngolaUserUseCase, DeleteLarAngolaUserUseCase, ListLarAngolaUsersUseCase, FindLarAngolaUserByIdUseCase, RegisterLarAngolaUserUseCase,
+	CreateInquiryUseCase, DeleteInquiryUseCase, ListInquiriesByListingUseCase, FindInquiryByIdUseCase, CreateLarAngolaUserUseCase, UpdateLarAngolaUserUseCase, DeleteLarAngolaUserUseCase, ListLarAngolaUsersUseCase, FindLarAngolaUserByIdUseCase, FindLarAngolaUserByUserIdUseCase, RegisterLarAngolaUserUseCase, SubmitVerificationUseCase,
 } from './usecases';
 import { HttpBuilder } from './utils';
 
@@ -72,7 +72,9 @@ import { HttpBuilder } from './utils';
 		DeleteLarAngolaUserUseCase,
 		ListLarAngolaUsersUseCase,
 		FindLarAngolaUserByIdUseCase,
+		FindLarAngolaUserByUserIdUseCase,
 		RegisterLarAngolaUserUseCase,
+		SubmitVerificationUseCase,
 	],
 	exports: [
 		FindPropertyByIdUseCase,

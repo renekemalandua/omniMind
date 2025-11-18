@@ -315,6 +315,12 @@ enum LarAngolaUserRole {
     company
 }
 
+enum VerificationStatusLA {
+    pending
+    approved
+    rejected
+}
+
 model PropertyCategoryLA {
     id          String   @id @default(uuid())
     name        String
@@ -381,15 +387,18 @@ model InquiryLA {
 }
 
 model LarAngolaUser {
-    id          String            @id @default(uuid())
-    userId      String            @unique
-    role        LarAngolaUserRole
-    fullName    String
-    phone       String?
-    city        String?
-    preferences Json?
-    createdAt   DateTime          @default(now())
-    updatedAt   DateTime          @updatedAt
+    id                 String               @id @default(uuid())
+    userId             String               @unique
+    role               LarAngolaUserRole
+    fullName           String
+    phone              String?
+    city               String?
+    preferences        Json?
+    isVerified         Boolean              @default(false)
+    verificationStatus VerificationStatusLA @default(pending)
+    verificationData   Json?
+    createdAt          DateTime             @default(now())
+    updatedAt          DateTime             @updatedAt
 
     user User @relation(fields: [userId], references: [id])
 

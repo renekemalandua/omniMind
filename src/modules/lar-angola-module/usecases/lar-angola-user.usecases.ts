@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UseCase } from '../../../shared';
 import { LarAngolaUserEntity } from '../entities/lar-angola-user.entity';
 import { ILarAngolaUserRepository } from '../repositories/ILarAngolaUserRepository';
-import { CreateLarAngolaUserRequestDTO, UpdateLarAngolaUserRequestDTO } from '../dto/lar-angola-user.dto';
+import { CreateLarAngolaUserRequestDTO, UpdateLarAngolaUserRequestDTO, SubmitVerificationRequestDTO } from '../dto/lar-angola-user.dto';
 
 @Injectable()
 export class CreateLarAngolaUserUseCase implements UseCase<CreateLarAngolaUserRequestDTO, LarAngolaUserEntity> {
@@ -65,5 +65,34 @@ export class FindLarAngolaUserByUserIdUseCase implements UseCase<string, LarAngo
 		const entity = await this.repository.findByUserId(userId);
 		if (!entity) throw new BadRequestException('LarAngola user not found');
 		return entity;
+	}
+}
+
+@Injectable()
+export class SubmitVerificationUseCase implements UseCase<{ id: string; data: SubmitVerificationRequestDTO }, LarAngolaUserEntity> {
+	constructor(private readonly repository: ILarAngolaUserRepository) { }
+	async execute({ id, data }: { id: string; data: SubmitVerificationRequestDTO }): Promise<LarAngolaUserEntity> {
+		const entity = await this.repository.findById(id);
+		if (!entity) throw new BadRequestException('LarAngola user not found');
+
+		// Verificar se já está verificado
+		if (entity.isVerified && entity.verificationStatus === 'approved') {
+			throw new BadRequestException('User is already verified');
+		}
+
+		// Atualizar dados de verificação
+		entity.phone = data.phone;
+		entity.verificationStatus = 'pending';
+		entity.isVerified = false;
+		entity.verificationData = {
+			nif: data.nif,
+			zonesOfOperation: data.zonesOfOperation,
+			biFrente: data.biFrente,
+			biVerso: data.biVerso,
+			foto: data.foto,
+			submittedAt: new Date().toISOString(),
+		};
+
+		return this.repository.update(entity);
 	}
 }

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export enum LarAngolaUserRoleDTO {
 	intermediary = 'intermediary',
@@ -59,6 +59,39 @@ export class UpdateLarAngolaUserRequestDTO {
 	@ApiPropertyOptional({ description: 'JSON preferences' })
 	@IsOptional()
 	preferences?: unknown;
+}
+
+export enum VerificationStatusDTO {
+	pending = 'pending',
+	approved = 'approved',
+	rejected = 'rejected',
+}
+
+export class SubmitVerificationRequestDTO {
+	@ApiProperty({ example: '+244900000000' })
+	@IsString()
+	phone: string;
+
+	@ApiPropertyOptional({ example: '123456789' })
+	@IsOptional()
+	@IsString()
+	nif?: string;
+
+	@ApiProperty({ example: ['Luanda', 'Bengo'] })
+	@IsArray()
+	zonesOfOperation: string[];
+
+	@ApiProperty({ example: 'base64-encoded-image' })
+	@IsString()
+	biFrente: string;
+
+	@ApiProperty({ example: 'base64-encoded-image' })
+	@IsString()
+	biVerso: string;
+
+	@ApiProperty({ example: 'base64-encoded-image' })
+	@IsString()
+	foto: string;
 }
 
 
