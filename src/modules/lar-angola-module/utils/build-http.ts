@@ -1,8 +1,9 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PropertyAdapter, ListingAdapter, PropertyCategoryAdapter, LarAngolaUserAdapter } from '../adapter';
 import { PropertyEntity, ListingEntity, InquiryEntity } from '../entities';
 import { FindPropertyByIdUseCase, FindPropertyCategoryByIdUseCase, FindLarAngolaUserByIdUseCase } from '../usecases';
 
+@Injectable()
 export class HttpBuilder {
 	constructor(
 		private readonly findUserByIdUseCase: FindLarAngolaUserByIdUseCase,
@@ -28,8 +29,7 @@ export class HttpBuilder {
 	}
 
 	async buildInquiry(inquiryEntity: InquiryEntity) {
-		const listing = await this.findPropertyByIdUseCase.execute(inquiryEntity.listingId as any);
-		// Note: For inquiry we show listing summary; reusing buildListing requires find listing usecase; here we keep minimal
+		// Note: For inquiry we show minimal info; listing details can be fetched separately if needed
 		const user = inquiryEntity.userId ? await this.findUserByIdUseCase.execute(inquiryEntity.userId) : null;
 		return {
 			id: inquiryEntity.id,
